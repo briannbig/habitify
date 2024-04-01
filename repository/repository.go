@@ -6,7 +6,7 @@ import (
 )
 
 var (
-	database = db.New()
+	database = db.New().Connection
 )
 
 type (
@@ -18,50 +18,96 @@ type (
 	}
 
 	userRepository struct {
-		db db.Db
 	}
 
 	habitRepository struct {
-		db db.Db
 	}
 )
 
 func NewUserRepository() Repository[model.User] {
-	return userRepository{db: database}
+	return userRepository{}
 }
 
 func NewHabitRepository() Repository[model.Habit] {
-	return habitRepository{db: database}
+	return habitRepository{}
 }
 
-func (u userRepository) Create(model model.User) (model.User, error) {
-	panic("unimplemented")
+func (u userRepository) Create(user model.User) (model.User, error) {
+	id := database.Create(
+		&model.User{
+			Email:    user.Email,
+			Password: user.Password,
+		})
+	var savedUser model.User
+	database.First(&savedUser, id)
+	return savedUser, nil
 }
 
 func (u userRepository) Delete(id uint) error {
-	panic("unimplemented")
+	database.Delete(&model.User{}, id)
+	return nil
 }
 
 func (u userRepository) GetAll() []model.User {
-	panic("unimplemented")
+	var users []model.User
+	database.Find(&users)
+	return users
 }
 
-func (u userRepository) Update(id uint, model model.User) (model.User, error) {
-	panic("unimplemented")
-}
+func (u userRepository) Update(id uint, user model.User) (model.User, error) {
+	var user_ model.User
+	database.First(&model.User{}, id)
 
-func (h habitRepository) Create(model model.Habit) (model.Habit, error) {
-	panic("unimplemented")
+	if user.Email != "" {
+		user_.Email = user.Email
+	}
+
+	if user.Password != "" {
+		user_.Password = user.Password
+	}
+
+	database.Save(user_)
+
+	database.First(user, id)
+
+	return user, nil
+
+}
+func (h habitRepository) Create(habit model.Habit) (model.Habit, error) {
+	id := database.Create(&habit)
+	var savedHabit model.Habit
+	database.First(&savedHabit, id)
+	return savedHabit, nil
 }
 
 func (h habitRepository) Delete(id uint) error {
-	panic("unimplemented")
+	database.Delete(&model.Habit{}, id)
+	return nil
 }
 
 func (h habitRepository) GetAll() []model.Habit {
-	panic("unimplemented")
+	var habits []model.Habit
+	database.Find(&habits)
+	return habits
 }
 
-func (h habitRepository) Update(id uint, model model.Habit) (model.Habit, error) {
-	panic("unimplemented")
+func (h habitRepository) Update(id uint, habit model.Habit) (model.Habit, error) {
+	var habit_ model.Habit
+	database.First(&habit_, id)
+
+	if habit.Name != "" {
+		habit_.Name = habit.Name
+	}
+
+	if habit_.Description != "" {
+		habit_.Description = habit.Description
+	}
+
+	if habit.CompletionStatus != "" {
+		habit_.CompletionStatus = habit.CompletionStatus
+	}
+
+	database.Save(&habit_)
+
+	return habit_, nil
 }
