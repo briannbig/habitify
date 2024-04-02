@@ -25,8 +25,8 @@ type (
 	User struct {
 		gorm.Model
 		Email    string  `json:"email"`
-		Password string  `json:"-"`
-		Habits   []Habit `gorm:"foreignKey:UserID"`
+		Password string  `json:"password"`
+		Habits   []Habit `gorm:"foreignKey:UserId"`
 	}
 
 	Habit struct {

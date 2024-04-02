@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/briannbig/habitify/handlers"
+	"github.com/briannbig/habitify/middlewares"
 	"github.com/gin-gonic/gin"
 )
 
@@ -13,7 +14,7 @@ var (
 func main() {
 	r := gin.Default()
 
-	userRoutes := r.Group("/users")
+	userRoutes := r.Group("/users").Use(middlewares.AuthMiddleware())
 	{
 		userRoutes.POST("/", userHandler.Create)
 		userRoutes.GET("/", userHandler.GetAll)
@@ -21,13 +22,15 @@ func main() {
 		userRoutes.DELETE("/:id", userHandler.Delete)
 	}
 
-	habitRoutes := r.Group("/habits")
+	habitRoutes := r.Group("/habits").Use(middlewares.AuthMiddleware())
 	{
 		habitRoutes.POST("/", habitHandler.Create)
 		habitRoutes.GET("/", habitHandler.GetAll)
 		habitRoutes.PUT("/:id", habitHandler.Update)
 		habitRoutes.DELETE("/:id", habitHandler.Delete)
 	}
+
+	r.POST("/register", userHandler.Create)
 
 	r.Run(":5050")
 }
