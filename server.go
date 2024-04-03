@@ -31,6 +31,7 @@ func main() {
 	}
 
 	r.POST("/register", userHandler.Create)
+	r.POST("/login", handlers.LoginHandler)
 
 	r.Run(":5050")
 }

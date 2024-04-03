@@ -20,8 +20,19 @@ func New() Db {
 
 	db.AutoMigrate(&model.User{}, &model.Habit{})
 
+	initSystemUser(db)
+
 	return Db{
 		Connection: db,
 	}
 
+}
+
+func initSystemUser(db *gorm.DB) {
+	var user model.User
+	db.Where("email = ?", "system").First(&user)
+
+	if user.Email == "" {
+		db.Create(&model.User{Email: "system", Password: "system", Role: model.UserRoleAdmin})
+	}
 }

@@ -17,7 +17,7 @@ type (
 		Delete(id uint) error
 	}
 
-	userRepository struct {
+	UserRepository struct {
 	}
 
 	habitRepository struct {
@@ -25,14 +25,14 @@ type (
 )
 
 func NewUserRepository() Repository[model.User] {
-	return userRepository{}
+	return UserRepository{}
 }
 
 func NewHabitRepository() Repository[model.Habit] {
 	return habitRepository{}
 }
 
-func (u userRepository) Create(user model.User) (model.User, error) {
+func (u UserRepository) Create(user model.User) (model.User, error) {
 	id := database.Create(
 		&model.User{
 			Email:    user.Email,
@@ -43,18 +43,18 @@ func (u userRepository) Create(user model.User) (model.User, error) {
 	return savedUser, nil
 }
 
-func (u userRepository) Delete(id uint) error {
+func (u UserRepository) Delete(id uint) error {
 	database.Delete(&model.User{}, id)
 	return nil
 }
 
-func (u userRepository) GetAll() []model.User {
+func (u UserRepository) GetAll() []model.User {
 	var users []model.User
 	database.Find(&users)
 	return users
 }
 
-func (u userRepository) Update(id uint, user model.User) (model.User, error) {
+func (u UserRepository) Update(id uint, user model.User) (model.User, error) {
 	var user_ model.User
 	database.First(&model.User{}, id)
 
@@ -73,6 +73,14 @@ func (u userRepository) Update(id uint, user model.User) (model.User, error) {
 	return user, nil
 
 }
+
+func (u UserRepository) FindUserByEmail(email string) (model.User, error) {
+	var user model.User
+	database.Where("email = ?", email).First(&user)
+
+	return user, nil
+}
+
 func (h habitRepository) Create(habit model.Habit) (model.Habit, error) {
 	id := database.Create(&habit)
 	var savedHabit model.Habit

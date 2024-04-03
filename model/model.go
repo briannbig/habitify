@@ -8,6 +8,7 @@ import (
 )
 
 type HabitCompletionStatus string
+type UserRole string
 
 const (
 	Started   HabitCompletionStatus = "Started"
@@ -15,6 +16,9 @@ const (
 	Done      HabitCompletionStatus = "Done"
 	Missed    HabitCompletionStatus = "Missed"
 	NotDone   HabitCompletionStatus = "Not done"
+
+	UserRoleAdmin   UserRole = "admin"
+	UserRoleRegular UserRole = "regular"
 )
 
 type (
@@ -24,9 +28,10 @@ type (
 
 	User struct {
 		gorm.Model
-		Email    string  `json:"email"`
-		Password string  `json:"password"`
-		Habits   []Habit `gorm:"foreignKey:UserId"`
+		Email    string   `json:"email"`
+		Password string   `json:"password"`
+		Role     UserRole `json:"role"`
+		Habits   []Habit  `gorm:"foreignKey:UserId"`
 	}
 
 	Habit struct {
