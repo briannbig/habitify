@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 
 	"github.com/briannbig/habitify/repository"
@@ -16,7 +15,6 @@ func LoginHandler(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	log.Printf("request: %s\n", request)
 
 	userRepo := repository.UserRepository{}
 

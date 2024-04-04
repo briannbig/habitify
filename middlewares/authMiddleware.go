@@ -1,22 +1,33 @@
 package middlewares
 
 import (
-	"github.com/briannbig/habitify/model"
-	"github.com/briannbig/habitify/repository"
+	"fmt"
+	"net/http"
+
+	"github.com/briannbig/habitify/util"
 	"github.com/gin-gonic/gin"
 )
 
-var userRepository repository.Repository[model.User] = repository.NewUserRepository()
+const (
+	strAuthorizationHeader = "Authorization"
+	strBearerSchema        = "Bearer "
+)
 
 func AuthMiddleware() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		authHeaderStr := ctx.GetHeader(strAuthorizationHeader)
+		tokenStr := authHeaderStr[len(strBearerSchema):]
+		if tokenStr == "" {
+			ctx.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Unaouthorized"})
+			return
+		}
+		err := util.VerifyToken(tokenStr)
 
-	users := userRepository.GetAll()
+		if err != nil {
+			errStr := fmt.Sprintf("error parsing token --- %s", err)
+			ctx.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": errStr})
+			return
+		}
 
-	accounts := map[string]string{}
-
-	for _, user := range users {
-		accounts[user.Email] = user.Password
 	}
-
-	return gin.BasicAuth(accounts)
 }
