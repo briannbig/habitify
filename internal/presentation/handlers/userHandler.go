@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/briannbig/habitify/model"
+	"github.com/briannbig/habitify/internal/domain/model"
 	"github.com/gin-gonic/gin"
 )
 

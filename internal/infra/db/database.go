@@ -1,7 +1,7 @@
 package db
 
 import (
-	"github.com/briannbig/habitify/model"
+	"github.com/briannbig/habitify/internal/domain/model"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )

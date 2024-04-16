@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/briannbig/habitify/handlers"
-	"github.com/briannbig/habitify/middlewares"
+	"github.com/briannbig/habitify/internal/presentation/handlers"
+	"github.com/briannbig/habitify/internal/presentation/middlewares"
 	"github.com/gin-gonic/gin"
 )
 

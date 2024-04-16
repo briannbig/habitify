@@ -1,8 +1,8 @@
 package repository
 
 import (
-	"github.com/briannbig/habitify/db"
-	"github.com/briannbig/habitify/model"
+	"github.com/briannbig/habitify/internal/domain/model"
+	"github.com/briannbig/habitify/internal/infra/db"
 )
 
 var (

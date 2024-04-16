@@ -1,8 +1,7 @@
 package handlers
 
 import (
-
-	"github.com/briannbig/habitify/repository"
+	"github.com/briannbig/habitify/internal/domain/repository"
 	"github.com/gin-gonic/gin"
 )
 

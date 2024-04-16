@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/briannbig/habitify/repository"
-	"github.com/briannbig/habitify/util"
+	"github.com/briannbig/habitify/internal/domain/repository"
+	"github.com/briannbig/habitify/internal/util"
 	"github.com/gin-gonic/gin"
 )
 

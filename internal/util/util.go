@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/briannbig/habitify/model"
+	"github.com/briannbig/habitify/internal/domain/model"
 	"github.com/golang-jwt/jwt/v5"
 )
 
